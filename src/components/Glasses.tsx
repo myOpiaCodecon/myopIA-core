@@ -1,5 +1,7 @@
+import type { GlassesPos } from '../hooks/useGlassesPhysics'
+
 interface Props {
-  pos: { x: number; y: number }
+  pos: GlassesPos
   onMouseDown: (e: React.MouseEvent<HTMLDivElement>) => void
   dragging: boolean
 }
@@ -13,7 +15,7 @@ export default function Glasses({ pos, onMouseDown, dragging }: Props) {
         left: pos.x,
         top: pos.y,
         zIndex: 2001,
-        transform: 'translate(-50%, -50%)',
+        transform: `translate(-50%, -50%) rotate(${pos.rotation}deg)`,
         cursor: dragging ? 'grabbing' : 'grab',
         pointerEvents: 'all',
         userSelect: 'none',
@@ -21,9 +23,9 @@ export default function Glasses({ pos, onMouseDown, dragging }: Props) {
         filter: 'drop-shadow(0 2px 6px rgba(0,0,0,0.35))',
       }}
     >
-      {/* viewBox 280x100 — left lens: cx=65 cy=50 r=48, right lens: cx=215 cy=50 r=48
-          Div centered via transform(-50%,-50%), so lens centers in screen coords are:
-          left=(pos.x-75, pos.y)  right=(pos.x+75, pos.y)  — matches BlurOverlay constants */}
+      {/* viewBox 280×100 — centros das lentes em (65,50) e (215,50)
+          Com translate(-50%,-50%) o centro do div fica em (pos.x, pos.y).
+          Offset de cada lente em tela: ±75px (LENS_H_OFFSET em BlurOverlay) */}
       <svg width="280" height="100" viewBox="0 0 280 100" fill="none">
         <circle cx="65"  cy="50" r="48" stroke="#1a1a1a" strokeWidth="3.5" fill="rgba(180,220,255,0.04)" />
         <circle cx="215" cy="50" r="48" stroke="#1a1a1a" strokeWidth="3.5" fill="rgba(180,220,255,0.04)" />
