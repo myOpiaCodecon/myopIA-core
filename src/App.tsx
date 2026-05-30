@@ -3,6 +3,7 @@ import BrowserHome from './pages/Browser/Home'
 import BrowserSearch from './pages/Browser/Search'
 import Youtube from './pages/Youtube'
 import YoutubeWatch from './pages/Youtube/Watch'
+import Windows from './pages/Windows'
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             </div>
           }
         />
+        <Route path="/windows" element={<Windows />} />
         <Route path="/browser" element={<BrowserHome />} />
         <Route path="/browser/search" element={<BrowserSearch />} />
         <Route path="/youtube" element={<Youtube />} />
