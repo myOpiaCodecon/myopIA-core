@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
+import BackButton from '../../components/BackButton'
 
 // ─── Icons ───────────────────────────────────────────────────────────────────
 
@@ -480,6 +481,7 @@ export default function YoutubeWatch() {
           </aside>
         )}
       </div>
+      <BackButton />
     </div>
   )
 }

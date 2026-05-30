@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react'
+import BackButton from '../../components/BackButton'
 
 // ─── Types ────────────────────────────────────────────────────────────────────
 
@@ -423,6 +424,7 @@ export default function Captcha() {
           </div>
         )}
       </div>
+      <BackButton />
     </>
   )
 }

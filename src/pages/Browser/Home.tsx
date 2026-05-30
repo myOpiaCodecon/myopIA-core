@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import BackButton from '../../components/BackButton'
 
 const G_COLORS = ['#4285F4', '#EA4335', '#FBBC05', '#4285F4', '#34A853', '#EA4335', '#FBBC05']
 const G_CHARS = 'Myoopia'.split('')
@@ -148,6 +149,7 @@ export default function BrowserHome() {
           </div>
         </div>
       </footer>
+      <BackButton />
     </div>
   )
 }

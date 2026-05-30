@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import BackButton from '../../components/BackButton'
 
 // ─── Icons ───────────────────────────────────────────────────────────────────
 
@@ -436,6 +437,7 @@ export default function Youtube() {
           </div>
         </div>
       </main>
+      <BackButton />
     </div>
   )
 }

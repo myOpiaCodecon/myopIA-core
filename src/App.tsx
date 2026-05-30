@@ -1,4 +1,5 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
+import Home from './pages/Home'
 import BrowserHome from './pages/Browser/Home'
 import BrowserSearch from './pages/Browser/Search'
 import Youtube from './pages/Youtube'
@@ -10,14 +11,7 @@ function App() {
   return (
     <BrowserRouter>
       <Routes>
-        <Route
-          path="/"
-          element={
-            <div className="flex items-center justify-center w-screen h-screen">
-              <h1 className="text-4xl font-bold tracking-tight">MyOpia 👓</h1>
-            </div>
-          }
-        />
+        <Route path="/" element={<Home />} />
         <Route path="/windows" element={<Windows />} />
         <Route path="/browser" element={<BrowserHome />} />
         <Route path="/browser/search" element={<BrowserSearch />} />
