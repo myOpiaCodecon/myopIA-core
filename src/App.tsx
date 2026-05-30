@@ -6,18 +6,19 @@ import Youtube from './pages/Youtube'
 import YoutubeWatch from './pages/Youtube/Watch'
 import Windows from './pages/Windows'
 import Captcha from './pages/captcha'
+import SimulatedLayout from './components/SimulatedLayout'
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/windows" element={<Windows />} />
-        <Route path="/browser" element={<BrowserHome />} />
-        <Route path="/browser/search" element={<BrowserSearch />} />
-        <Route path="/youtube" element={<Youtube />} />
-        <Route path="/youtube/watch" element={<YoutubeWatch />} />
-        <Route path="/captcha" element={<Captcha />} />
+        <Route path="/windows" element={<SimulatedLayout><Windows /></SimulatedLayout>} />
+        <Route path="/browser" element={<SimulatedLayout><BrowserHome /></SimulatedLayout>} />
+        <Route path="/browser/search" element={<SimulatedLayout><BrowserSearch /></SimulatedLayout>} />
+        <Route path="/youtube" element={<SimulatedLayout><Youtube /></SimulatedLayout>} />
+        <Route path="/youtube/watch" element={<SimulatedLayout><YoutubeWatch /></SimulatedLayout>} />
+        <Route path="/captcha" element={<SimulatedLayout><Captcha /></SimulatedLayout>} />
       </Routes>
     </BrowserRouter>
   )
