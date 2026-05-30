@@ -27,7 +27,7 @@ export function useGlassesPhysics() {
   // Estado mutável mantido em ref — evita closures stale no loop de física
   const phys = useRef({
     x: window.innerWidth  / 2,
-    y: window.innerHeight / 2,
+    y: window.innerHeight - HALF_H,
     vx: 0,
     vy: 0,
     rotation: 0,
