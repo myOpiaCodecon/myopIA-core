@@ -45,7 +45,7 @@ export default function Glasses({ pos, onMouseDown, dragging, isBroken, skin }: 
         position: 'fixed',
         left: pos.x,
         top: pos.y,
-        zIndex: 2001,
+        zIndex: 2007,
         transform: `translate(-50%, -50%) rotate(${pos.rotation}deg)`,
         cursor: isBroken ? 'not-allowed' : dragging ? 'grabbing' : 'grab',
         pointerEvents: 'all',

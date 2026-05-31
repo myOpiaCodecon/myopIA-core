@@ -1,7 +1,10 @@
 import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SKINS, type GlassesSkin } from '../../data/skins'
+import { CONDITIONS } from '../../data/conditions'
 import { useSkin } from '../../contexts/SkinContext'
+import { useCondition } from '../../contexts/ConditionContext'
+import { usePlan } from '../../contexts/PlanContext'
 import GlassesFrame from '../../components/GlassesFrame'
 
 const SECTIONS: { label: string; shape: GlassesSkin['shape'] }[] = [
@@ -192,9 +195,103 @@ function SkinCard({ skin, onRequestBuy }: { skin: GlassesSkin; onRequestBuy: (id
   )
 }
 
+// ── Seção de doenças (PRO) ────────────────────────────────────────────────────
+function ConditionsSection() {
+  const { conditions, toggle, setSeverity } = useCondition()
+
+  return (
+    <div style={{ marginBottom: 36 }}>
+      <div style={{
+        fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+        textTransform: 'uppercase', color: '#475569', marginBottom: 14,
+      }}>
+        Simulação de Doenças
+      </div>
+
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
+        {CONDITIONS.map(cond => {
+          const state = conditions[cond.id]
+          return (
+            <div
+              key={cond.id}
+              style={{
+                background: state.enabled ? 'rgba(99,102,241,0.08)' : 'rgba(255,255,255,0.03)',
+                border: `1px solid ${state.enabled ? 'rgba(99,102,241,0.35)' : 'rgba(255,255,255,0.08)'}`,
+                borderRadius: 14,
+                padding: '14px 16px',
+                transition: 'border-color 0.2s, background 0.2s',
+              }}
+            >
+              {/* Header */}
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: state.enabled ? 14 : 0 }}>
+                <div>
+                  <div style={{ fontSize: 14, fontWeight: 700, color: state.enabled ? '#e2e8f0' : '#64748b' }}>
+                    {cond.name}
+                  </div>
+                  <div style={{ fontSize: 12, color: '#475569', marginTop: 2 }}>
+                    {cond.description}
+                  </div>
+                </div>
+
+                {/* Toggle */}
+                <div
+                  onClick={() => toggle(cond.id)}
+                  style={{
+                    width: 44, height: 24, borderRadius: 999, cursor: 'pointer',
+                    background: state.enabled ? '#6366f1' : 'rgba(255,255,255,0.1)',
+                    position: 'relative', flexShrink: 0, transition: 'background 0.2s',
+                  }}
+                >
+                  <div style={{
+                    position: 'absolute', top: 3,
+                    left: state.enabled ? 23 : 3,
+                    width: 18, height: 18, borderRadius: '50%',
+                    background: '#fff', transition: 'left 0.2s',
+                    boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+                  }}/>
+                </div>
+              </div>
+
+              {/* Slider de grau */}
+              {state.enabled && (
+                <div>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 6 }}>
+                    <span style={{ fontSize: 12, color: '#94a3b8' }}>Grau</span>
+                    <span style={{ fontSize: 12, fontWeight: 700, color: '#a5b4fc' }}>
+                      {state.severity <= 33 ? 'Leve' : state.severity <= 66 ? 'Moderado' : 'Severo'}
+                      {' '}({state.severity}%)
+                    </span>
+                  </div>
+                  <input
+                    type="range"
+                    min={1} max={100}
+                    value={state.severity}
+                    onChange={e => setSeverity(cond.id, Number(e.target.value))}
+                    style={{
+                      width: '100%', accentColor: '#6366f1',
+                      height: 4, cursor: 'pointer',
+                    }}
+                  />
+                  <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 4 }}>
+                    {['Leve', 'Moderado', 'Severo'].map(l => (
+                      <span key={l} style={{ fontSize: 10, color: '#334155' }}>{l}</span>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
+          )
+        })}
+      </div>
+    </div>
+  )
+}
+
 // ── Página ────────────────────────────────────────────────────────────────────
 export default function OticaPage() {
   const navigate = useNavigate()
+  const { planId } = usePlan()
+  const isPro = planId === 'pro' || planId === 'enterprise'
   const { previewSkinId, cancelPreview, buySkin } = useSkin()
 
   const [payingSkinId, setPayingSkinId] = useState<GlassesSkin['id'] | null>(null)
@@ -283,6 +380,30 @@ export default function OticaPage() {
               >
                 Cancelar
               </button>
+            </div>
+          </div>
+        )}
+
+        {/* Simulação de doenças — PRO */}
+        {isPro && <ConditionsSection />}
+
+        {/* Aviso para plano Free */}
+        {!isPro && (
+          <div style={{
+            background: 'rgba(99,102,241,0.06)',
+            border: '1px solid rgba(99,102,241,0.2)',
+            borderRadius: 14, padding: '14px 18px',
+            marginBottom: 36,
+            display: 'flex', alignItems: 'center', gap: 12,
+          }}>
+            <span style={{ fontSize: 22 }}>🔒</span>
+            <div>
+              <div style={{ fontSize: 13, fontWeight: 700, color: '#818cf8' }}>
+                Simulação de Doenças — PRO
+              </div>
+              <div style={{ fontSize: 12, color: '#475569', marginTop: 2 }}>
+                Assine o plano PRO para simular Astigmatismo, Hipermetropia, Glaucoma e Catarata.
+              </div>
             </div>
           </div>
         )}

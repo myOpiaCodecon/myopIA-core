@@ -4,12 +4,15 @@ import './index.css'
 import App from './App.tsx'
 import { PlanProvider } from './contexts/PlanContext.tsx'
 import { SkinProvider } from './contexts/SkinContext.tsx'
+import { ConditionProvider } from './contexts/ConditionContext.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
     <PlanProvider>
       <SkinProvider>
-        <App />
+        <ConditionProvider>
+          <App />
+        </ConditionProvider>
       </SkinProvider>
     </PlanProvider>
   </StrictMode>,

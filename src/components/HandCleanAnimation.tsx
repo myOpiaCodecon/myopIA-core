@@ -20,7 +20,7 @@ export default function HandCleanAnimation({ pos, active }: Props) {
         left: pos.x,
         top: pos.y,
         transform: 'translate(-50%, -50%)',
-        zIndex: 2005,
+        zIndex: 2009,
         pointerEvents: 'none',
       }}
     >

@@ -15,7 +15,7 @@ export default function WiperAnimation({ pos, active }: Props) {
         left: pos.x,
         top: pos.y,
         transform: 'translate(-50%, -50%)',
-        zIndex: 2004,
+        zIndex: 2008,
         pointerEvents: 'none',
       }}
     >

@@ -13,6 +13,7 @@ import ConfigPanel from './ConfigPanel'
 import RainCanvas from './RainCanvas'
 import WiperAnimation from './WiperAnimation'
 import HandCleanAnimation from './HandCleanAnimation'
+import ConditionOverlay from './ConditionOverlay'
 
 interface Props {
   children: React.ReactNode
@@ -50,6 +51,7 @@ export default function SimulatedLayout({ children }: Props) {
 
       <RainCanvas active={isRaining} />
       <BlurOverlay glassesPos={pos} dirt={dirt} skin={skin} />
+      <ConditionOverlay glassesPos={pos} skin={skin} />
       <WiperAnimation pos={pos} active={isWiperActive} />
       <HandCleanAnimation pos={pos} active={isHandCleaning} />
       <Glasses pos={pos} onMouseDown={onMouseDown} dragging={isDragging} isBroken={isBroken} skin={skin} />
