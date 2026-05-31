@@ -7,8 +7,10 @@ export type SkinId =
   | 'rt-classic' | 'rt-transparent' | 'rt-tortoise' | 'rt-pride' | 'rt-vintage'
   // Olho de gato
   | 'ce-classic' | 'ce-transparent' | 'ce-tortoise' | 'ce-pride' | 'ce-vintage'
+  // Especial
+  | 'tony-stark'
 
-export type FrameShape   = 'round' | 'square' | 'rect' | 'cateye' | 'aviador'
+export type FrameShape   = 'round' | 'square' | 'rect' | 'cateye' | 'aviador' | 'stark'
 export type ColorEffect  = 'rainbow' | 'tortoise'
 
 export interface GlassesSkin {
@@ -60,7 +62,7 @@ const round: GlassesSkin[] = [
   },
   {
     id: 'pride',
-    name: 'Pride',
+    name: 'Leo',
     price: 59.9,
     frameColor: '#e40303',
     frameWidth: 4.5,
@@ -109,7 +111,7 @@ const square: GlassesSkin[] = [
   },
   {
     id: 'sq-pride',
-    name: 'Quadrado Pride',
+    name: 'Quadrado Leo',
     price: 69.9,
     frameColor: '#e40303',
     frameWidth: 4.5,
@@ -160,7 +162,7 @@ const rect: GlassesSkin[] = [
   },
   {
     id: 'rt-pride',
-    name: 'Retangular Pride',
+    name: 'Retangular Leo',
     price: 74.9,
     frameColor: '#e40303',
     frameWidth: 4.5,
@@ -211,7 +213,7 @@ const cateye: GlassesSkin[] = [
   },
   {
     id: 'ce-pride',
-    name: 'Gatinho Pride',
+    name: 'Gatinho Leo',
     price: 74.9,
     frameColor: '#e40303',
     frameWidth: 4.5,
@@ -230,4 +232,17 @@ const cateye: GlassesSkin[] = [
   },
 ]
 
-export const SKINS: GlassesSkin[] = [...round, ...square, ...rect, ...cateye]
+// ── Especial ─────────────────────────────────────────────────────────────────
+const special: GlassesSkin[] = [
+  {
+    id: 'tony-stark',
+    name: 'Tony Stark',
+    price: 299.9,
+    frameColor: '#C8A040',
+    frameWidth: 1.6,
+    lensColor: 'rgba(210,165,20,0.22)',
+    shape: 'stark',
+  },
+]
+
+export const SKINS: GlassesSkin[] = [...round, ...square, ...rect, ...cateye, ...special]

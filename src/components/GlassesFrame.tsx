@@ -70,6 +70,12 @@ export default function GlassesFrame({ skin, isBroken = false, width = 280, heig
         <path d={CE_R} stroke={stroke} strokeWidth={w} fill={skin.lensColor}/>
       </>}
 
+      {/* Tony Stark: retangular muito arredondado, armação fina, lente âmbar */}
+      {shape === 'stark' && <>
+        <rect x="22"  y="20" width="86" height="60" rx="22" stroke={stroke} strokeWidth={w} fill={skin.lensColor}/>
+        <rect x="172" y="20" width="86" height="60" rx="22" stroke={stroke} strokeWidth={w} fill={skin.lensColor}/>
+      </>}
+
       {/* ── Ponte ── */}
       {shape === 'round' && (
         <path d="M 113 50 Q 140 36 167 50" stroke={stroke} strokeWidth={w} strokeLinecap="round"/>
@@ -87,6 +93,10 @@ export default function GlassesFrame({ skin, isBroken = false, width = 280, heig
       {shape === 'cateye' && (
         <path d="M 112 48 Q 140 40 168 48" stroke={stroke} strokeWidth={w} strokeLinecap="round"/>
       )}
+      {shape === 'stark' && <>
+        <path d="M 108 36 Q 140 30 172 36" stroke={stroke} strokeWidth={w}       strokeLinecap="round"/>
+        <path d="M 108 44 Q 140 38 172 44" stroke={stroke} strokeWidth={w * 0.7} strokeLinecap="round"/>
+      </>}
 
       {/* ── Hastes ── */}
       {(shape === 'round' || shape === 'aviador' || shape === 'rect') && <>
@@ -100,6 +110,10 @@ export default function GlassesFrame({ skin, isBroken = false, width = 280, heig
       {shape === 'cateye' && <>
         <line x1="13"  y1="50" x2="0"   y2="46" stroke={stroke} strokeWidth={w} strokeLinecap="round"/>
         <line x1="267" y1="50" x2="280" y2="46" stroke={stroke} strokeWidth={w} strokeLinecap="round"/>
+      </>}
+      {shape === 'stark' && <>
+        <line x1="22"  y1="50" x2="0"   y2="46" stroke={stroke} strokeWidth={w} strokeLinecap="round"/>
+        <line x1="258" y1="50" x2="280" y2="46" stroke={stroke} strokeWidth={w} strokeLinecap="round"/>
       </>}
     </svg>
   )

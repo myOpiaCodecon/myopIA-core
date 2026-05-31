@@ -1,18 +1,107 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { SKINS, type GlassesSkin } from '../../data/skins'
 import { useSkin } from '../../contexts/SkinContext'
 import GlassesFrame from '../../components/GlassesFrame'
 
 const SECTIONS: { label: string; shape: GlassesSkin['shape'] }[] = [
-  { label: 'Redondo',       shape: undefined },
-  { label: 'Quadrado',      shape: 'square'  },
-  { label: 'Retangular',    shape: 'rect'    },
-  { label: 'Olho de Gato',  shape: 'cateye'  },
+  { label: 'Redondo',           shape: undefined },
+  { label: 'Quadrado',          shape: 'square'  },
+  { label: 'Retangular',        shape: 'rect'    },
+  { label: 'Olho de Gato',      shape: 'cateye'  },
+  { label: 'Coleção Especial',  shape: 'stark'   },
 ]
 
-function SkinCard({ skin }: { skin: GlassesSkin }) {
-  const { purchasedSkinIds, equippedSkinId, previewSkinId, equipSkin, buySkin, startPreview } = useSkin()
+// ── Modal PIX ─────────────────────────────────────────────────────────────────
+function PixModal({ skin, onCancel }: {
+  skin: GlassesSkin
+  onCancel: () => void
+}) {
+  return (
+    <div
+      onClick={onCancel}
+      style={{
+        position: 'fixed', inset: 0, zIndex: 9999,
+        background: 'rgba(0,0,0,0.75)',
+        backdropFilter: 'blur(6px)',
+        display: 'flex', alignItems: 'center', justifyContent: 'center',
+        fontFamily: 'system-ui, sans-serif',
+      }}
+    >
+      <div
+        onClick={e => e.stopPropagation()}
+        style={{
+          background: 'rgba(10,18,38,0.98)',
+          border: '1px solid rgba(255,255,255,0.1)',
+          borderRadius: 20,
+          padding: '32px 28px',
+          width: 'min(90vw, 380px)',
+          color: '#fff',
+          textAlign: 'center',
+          boxShadow: '0 24px 64px rgba(0,0,0,0.6)',
+        }}
+      >
+        {/* Ícone */}
+        <div style={{ fontSize: 48, marginBottom: 16 }}>💸</div>
+
+        {/* Título */}
+        <div style={{ fontSize: 17, fontWeight: 800, marginBottom: 12, letterSpacing: '-0.01em' }}>
+          Finalizar compra
+        </div>
+
+        {/* Preview da armação */}
+        <div style={{
+          background: 'rgba(255,255,255,0.04)',
+          borderRadius: 12, padding: '10px 8px 6px',
+          marginBottom: 20,
+        }}>
+          <GlassesFrame skin={skin} width="100%" height={60} />
+          <div style={{ fontSize: 13, fontWeight: 700, color: '#e2e8f0', marginTop: 6 }}>
+            {skin.name}
+          </div>
+          <div style={{ fontSize: 14, fontWeight: 800, color: '#4ade80', marginTop: 2 }}>
+            R$ {skin.price!.toFixed(2).replace('.', ',')}
+          </div>
+        </div>
+
+        {/* Mensagem PIX */}
+        <div style={{
+          background: 'rgba(34,197,94,0.08)',
+          border: '1px solid rgba(34,197,94,0.25)',
+          borderRadius: 12,
+          padding: '14px 16px',
+          marginBottom: 24,
+          fontSize: 14,
+          lineHeight: 1.6,
+          color: '#d1fae5',
+          textAlign: 'left',
+        }}>
+          Faça o PIX para <strong style={{ color: '#4ade80' }}>Fabrício Santos</strong>.
+          <br/>
+          Assim que o pagamento for confirmado sua armação será liberada.
+        </div>
+
+        {/* Ações */}
+        <button
+          onClick={onCancel}
+          style={{
+            padding: '11px 0', borderRadius: 12,
+            border: '1px solid rgba(255,255,255,0.1)',
+            background: 'transparent',
+            color: '#94a3b8', fontSize: 13, fontWeight: 600,
+            cursor: 'pointer', fontFamily: 'inherit',
+          }}
+        >
+          Voltar
+        </button>
+      </div>
+    </div>
+  )
+}
+
+// ── Card de skin ──────────────────────────────────────────────────────────────
+function SkinCard({ skin, onRequestBuy }: { skin: GlassesSkin; onRequestBuy: (id: GlassesSkin['id']) => void }) {
+  const { purchasedSkinIds, equippedSkinId, previewSkinId, equipSkin, startPreview } = useSkin()
 
   const owned      = purchasedSkinIds.includes(skin.id)
   const equipped   = equippedSkinId === skin.id
@@ -30,18 +119,13 @@ function SkinCard({ skin }: { skin: GlassesSkin }) {
         previewing ? 'rgba(139,92,246,0.4)'  :
                      'rgba(255,255,255,0.08)'
       }`,
-      borderRadius: 16,
-      padding: '16px 14px 14px',
-      display: 'flex',
-      flexDirection: 'column',
-      gap: 10,
+      borderRadius: 16, padding: '16px 14px 14px',
+      display: 'flex', flexDirection: 'column', gap: 10,
     }}>
-      {/* Preview */}
       <div style={{ background: 'rgba(255,255,255,0.03)', borderRadius: 10, padding: '8px 4px 4px' }}>
         <GlassesFrame skin={skin} width="100%" height={70} />
       </div>
 
-      {/* Info */}
       <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: 6 }}>
         <span style={{ fontSize: 13, fontWeight: 700, color: '#e2e8f0' }}>{skin.name}</span>
         {equipped && (
@@ -60,7 +144,6 @@ function SkinCard({ skin }: { skin: GlassesSkin }) {
         {skin.price === null ? 'Gratuito' : `R$ ${skin.price.toFixed(2).replace('.', ',')}`}
       </div>
 
-      {/* Ações */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 6, marginTop: 2 }}>
         {owned ? (
           <button
@@ -71,8 +154,7 @@ function SkinCard({ skin }: { skin: GlassesSkin }) {
               background: equipped ? 'rgba(99,102,241,0.25)' : 'rgba(99,102,241,0.65)',
               color: equipped ? '#818cf8' : '#fff',
               fontSize: 13, fontWeight: 700,
-              cursor: equipped ? 'default' : 'pointer',
-              fontFamily: 'inherit',
+              cursor: equipped ? 'default' : 'pointer', fontFamily: 'inherit',
             }}
           >
             {equipped ? '✓ Equipado' : 'Equipar'}
@@ -93,7 +175,7 @@ function SkinCard({ skin }: { skin: GlassesSkin }) {
               {previewing ? '👁️ Em prévia' : 'Experimentar'}
             </button>
             <button
-              onClick={() => buySkin(skin.id)}
+              onClick={() => onRequestBuy(skin.id)}
               style={{
                 padding: '8px 0', borderRadius: 10, border: 'none',
                 background: '#4f46e5', color: '#fff',
@@ -110,9 +192,13 @@ function SkinCard({ skin }: { skin: GlassesSkin }) {
   )
 }
 
+// ── Página ────────────────────────────────────────────────────────────────────
 export default function OticaPage() {
   const navigate = useNavigate()
   const { previewSkinId, cancelPreview, buySkin } = useSkin()
+
+  const [payingSkinId, setPayingSkinId] = useState<GlassesSkin['id'] | null>(null)
+  const payingSkin = payingSkinId ? SKINS.find(s => s.id === payingSkinId) ?? null : null
 
   useEffect(() => () => cancelPreview(), [cancelPreview])
 
@@ -127,6 +213,14 @@ export default function OticaPage() {
       overflowY: 'auto',
       overflowX: 'hidden',
     }}>
+      {/* Modal PIX */}
+      {payingSkin && (
+        <PixModal
+          skin={payingSkin}
+          onCancel={() => setPayingSkinId(null)}
+        />
+      )}
+
       {/* Header */}
       <header style={{
         position: 'sticky', top: 0, zIndex: 10,
@@ -178,7 +272,7 @@ export default function OticaPage() {
             </div>
             <div style={{ display: 'flex', gap: 8 }}>
               <button
-                onClick={() => buySkin(previewSkin.id)}
+                onClick={() => setPayingSkinId(previewSkin.id)}
                 style={{ padding: '7px 14px', borderRadius: 8, border: 'none', background: '#4f46e5', color: '#fff', fontSize: 12, fontWeight: 700, cursor: 'pointer' }}
               >
                 Comprar
@@ -209,7 +303,9 @@ export default function OticaPage() {
                 gridTemplateColumns: 'repeat(auto-fill, minmax(200px, 1fr))',
                 gap: 14,
               }}>
-                {skins.map(skin => <SkinCard key={skin.id} skin={skin} />)}
+                {skins.map(skin => (
+                  <SkinCard key={skin.id} skin={skin} onRequestBuy={setPayingSkinId} />
+                ))}
               </div>
             </div>
           )
