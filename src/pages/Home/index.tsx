@@ -10,7 +10,7 @@ const APPS = [
     name: 'Windows',
     desc: 'Simulador de Windows 11 no navegador',
     icon: (
-      <svg viewBox="0 0 88 88" width="40" height="40" fill="white">
+      <svg viewBox="0 0 88 88" className="w-8 h-8 sm:w-10 sm:h-10" fill="white">
         <path d="M0 12.402l35.687-4.86.016 34.423-35.67.203zm35.67 33.529.028 34.453L.028 75.48.026 45.7zm4.326-39.025L87.314 0v41.527l-47.318.376zm47.329 39.349-.011 41.34-47.318-6.678-.066-34.739z"/>
       </svg>
     ),
@@ -21,7 +21,7 @@ const APPS = [
     name: 'Myoopia',
     desc: 'Clone de alta fidelidade do Google',
     icon: (
-      <svg viewBox="0 0 24 24" width="40" height="40" fill="white">
+      <svg viewBox="0 0 24 24" className="w-8 h-8 sm:w-10 sm:h-10" fill="white">
         <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
       </svg>
     ),
@@ -32,7 +32,7 @@ const APPS = [
     name: 'MyoTube',
     desc: 'Clone do YouTube com vídeos reais',
     icon: (
-      <svg viewBox="0 0 24 24" width="40" height="40" fill="white">
+      <svg viewBox="0 0 24 24" className="w-8 h-8 sm:w-10 sm:h-10" fill="white">
         <path d="M21.543 6.498C22 8.28 22 12 22 12s0 3.72-.457 5.502c-.254.985-.997 1.76-1.938 2.022C17.896 20 12 20 12 20s-5.893 0-7.605-.476c-.945-.266-1.687-1.04-1.938-2.022C2 15.72 2 12 2 12s0-3.72.457-5.502c.254-.985.997-1.76 1.938-2.022C6.107 4 12 4 12 4s5.896 0 7.605.476c.945.266 1.687 1.04 1.938 2.022zM10 15.5l6-3.5-6-3.5v7z"/>
       </svg>
     ),
@@ -43,7 +43,7 @@ const APPS = [
     name: 'reCAPTCHA',
     desc: 'Clone do desafio de imagens do Google',
     icon: (
-      <svg viewBox="0 0 24 24" width="40" height="40" fill="white">
+      <svg viewBox="0 0 24 24" className="w-8 h-8 sm:w-10 sm:h-10" fill="white">
         <path d="M17.65 6.35A7.96 7.96 0 0012 4a8 8 0 00-8 8 8 8 0 008 8c3.73 0 6.84-2.55 7.73-6h-2.08A5.99 5.99 0 0112 18a6 6 0 01-6-6 6 6 0 016-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
       </svg>
     ),
@@ -62,69 +62,70 @@ export default function Home() {
 
   return (
     <div
-      className="min-h-screen flex flex-col items-center justify-center p-8 gap-10"
+      className="h-screen overflow-y-auto flex flex-col items-center px-4 pt-14 pb-8 sm:px-8 sm:pt-16 sm:pb-12 gap-6 sm:gap-10"
       style={{ background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 60%, #0f2744 100%)' }}
     >
       {/* Logo + title */}
-      <div className="flex flex-col items-center gap-4 text-center">
+      <div className="flex flex-col items-center gap-3 sm:gap-4 text-center">
         <div
-          className="p-5 rounded-3xl"
+          className="p-3 sm:p-5 rounded-2xl sm:rounded-3xl"
           style={{ background: 'rgba(255,255,255,0.08)', border: '1px solid rgba(255,255,255,0.12)' }}
         >
           <img
             src={logoUrl}
             alt="MyOpia logo"
-            className="h-16 w-auto"
+            className="h-12 sm:h-16 w-auto"
             style={{ filter: 'invert(1) brightness(1.1)' }}
           />
         </div>
         <div>
           <h1
-            className="text-5xl font-bold text-white tracking-tight"
+            className="text-3xl sm:text-5xl font-bold text-white tracking-tight"
             style={{ fontFamily: 'Roboto, Arial, sans-serif' }}
           >
             MyOpia
           </h1>
-          <p className="text-slate-400 mt-2 text-[15px]">
+          <p className="text-slate-400 mt-1.5 sm:mt-2 text-[13px] sm:text-[15px]">
             O primeiro simulador de miopia extrema para web
           </p>
         </div>
       </div>
 
       {/* App grid */}
-      <div className="grid grid-cols-2 gap-4 w-full max-w-[480px]">
+      <div className="grid grid-cols-2 gap-3 sm:gap-4 w-full max-w-[480px]">
         {APPS.map(app => (
           <Link
             key={app.path}
             to={app.path}
-            className={`bg-gradient-to-br ${app.gradient} rounded-2xl p-5 flex flex-col gap-4 shadow-lg hover:shadow-2xl hover:scale-[1.03] transition-all duration-200 active:scale-[0.98]`}
+            className={`bg-gradient-to-br ${app.gradient} rounded-xl sm:rounded-2xl p-3 sm:p-5 flex flex-col gap-2 sm:gap-4 shadow-lg hover:shadow-2xl hover:scale-[1.03] transition-all duration-200 active:scale-[0.98]`}
             style={{ border: '1px solid rgba(255,255,255,0.1)' }}
           >
             <div className="opacity-90">{app.icon}</div>
             <div>
-              <p className="font-bold text-white text-[17px] leading-tight">{app.name}</p>
-              <p className="text-white/70 text-[12px] mt-0.5 leading-snug">{app.desc}</p>
+              <p className="font-bold text-white text-[14px] sm:text-[17px] leading-tight">{app.name}</p>
+              <p className="text-white/70 text-[11px] sm:text-[12px] mt-0.5 leading-snug">{app.desc}</p>
             </div>
           </Link>
         ))}
       </div>
 
       {/* Planos */}
-      <div className="w-full max-w-[760px] flex flex-col gap-4">
+      <div className="w-full max-w-[760px] flex flex-col gap-3 sm:gap-4">
         <h2
-          className="text-center text-white/60 text-[12px] uppercase tracking-widest"
+          className="text-center text-white/60 text-[11px] sm:text-[12px] uppercase tracking-widest"
           style={{ fontFamily: 'Roboto, Arial, sans-serif' }}
         >
           Escolha seu nível de sofrimento
         </h2>
 
-        <div className="grid grid-cols-3 gap-3">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
           {PLANS.map(plan => {
             const active = planId === plan.id
             return (
               <button
                 key={plan.id}
                 onClick={() => setPlan(plan.id)}
+                className="text-left cursor-pointer relative rounded-2xl p-4 transition-all duration-200"
                 style={{
                   background: active
                     ? `linear-gradient(135deg, ${plan.accent}22, ${plan.accent}11)`
@@ -132,12 +133,6 @@ export default function Home() {
                   border: active
                     ? `1.5px solid ${plan.accent}`
                     : '1.5px solid rgba(255,255,255,0.08)',
-                  borderRadius: 16,
-                  padding: '16px 14px',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  transition: 'all 0.18s',
-                  position: 'relative',
                 }}
               >
                 {active && (
@@ -157,29 +152,33 @@ export default function Home() {
                   </div>
                 )}
 
-                <div style={{ fontSize: 22, marginBottom: 6 }}>{PLAN_ICONS[plan.id]}</div>
-
-                <div
-                  style={{
-                    fontFamily: 'Roboto, Arial, sans-serif',
-                    fontWeight: 700,
-                    fontSize: 16,
-                    color: active ? plan.accent : '#f1f5f9',
-                    marginBottom: 2,
-                  }}
-                >
-                  {plan.name}
-                </div>
-
-                <div
-                  style={{
-                    fontSize: 12,
-                    color: '#64748b',
-                    marginBottom: 10,
-                    fontFamily: 'Roboto, Arial, sans-serif',
-                  }}
-                >
-                  {plan.price}
+                {/* Header: horizontal on mobile, vertical on desktop */}
+                <div className="flex flex-row sm:flex-col items-center sm:items-start gap-3 sm:gap-0 mb-3 sm:mb-0">
+                  <div style={{ fontSize: 22, flexShrink: 0 }} className="sm:mb-1.5">
+                    {PLAN_ICONS[plan.id]}
+                  </div>
+                  <div className="flex items-baseline gap-2 sm:block min-w-0">
+                    <div
+                      style={{
+                        fontFamily: 'Roboto, Arial, sans-serif',
+                        fontWeight: 700,
+                        fontSize: 16,
+                        color: active ? plan.accent : '#f1f5f9',
+                      }}
+                    >
+                      {plan.name}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: 12,
+                        color: '#64748b',
+                        fontFamily: 'Roboto, Arial, sans-serif',
+                      }}
+                      className="sm:mt-0.5 sm:mb-2.5"
+                    >
+                      {plan.price}
+                    </div>
+                  </div>
                 </div>
 
                 <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -208,7 +207,7 @@ export default function Home() {
       </div>
 
       {/* Footer */}
-      <p className="text-slate-600 text-[12px] text-center">
+      <p className="text-slate-600 text-[12px] text-center pb-2 sm:pb-0">
         Claude Brothers · CodeCon 2025
       </p>
     </div>
