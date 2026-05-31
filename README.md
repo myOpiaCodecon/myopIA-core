@@ -94,7 +94,7 @@ Sistema de conquistas desbloqueadas conforme o usuário explora os ambientes.
 | Linguagem | TypeScript 6 |
 | Build | Vite 8 |
 | Estilo | Tailwind CSS v4 |
-| Roteamento | React Router v7 |
+| Roteamento | React Router v7 | 
 | Estado global | Zustand + Context API |
 | Animações | Framer Motion |
 | Áudio | Howler.js |
