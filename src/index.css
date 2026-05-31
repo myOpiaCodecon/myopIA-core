@@ -17,3 +17,82 @@ body {
   height: 100vh;
   position: relative;
 }
+
+/* ══ Gotas nas lentes ══ */
+@keyframes drop-appear {
+  0%   { opacity: 0; transform: translateY(-6px) scale(0.5); }
+  60%  { opacity: 1; transform: translateY(0)    scale(1.05); }
+  100% { opacity: 1; transform: translateY(0)    scale(1); }
+}
+
+/* Gotas varridas pelo limpador: deslizam para o lado e somem */
+@keyframes drop-wipe {
+  0%   { opacity: 1; transform: translate(0, 0); }
+  100% { opacity: 0; transform: translate(12px, 18px) scale(0.3); }
+}
+
+/* ══ Limpador de parabrisa (rain-driven) ══ */
+@keyframes wiper-sweep-l {
+  0%   { transform: rotate(-42deg); }
+  50%  { transform: rotate(42deg);  }
+  100% { transform: rotate(-42deg); }
+}
+@keyframes wiper-sweep-r {
+  0%   { transform: rotate(42deg);  }
+  50%  { transform: rotate(-42deg); }
+  100% { transform: rotate(42deg);  }
+}
+
+@keyframes rain-drip {
+  0%   { opacity: 0.8; transform: translateY(0);    }
+  100% { opacity: 0;   transform: translateY(22px); }
+}
+
+/* ══ Mão com pano ══
+   Percurso: fora-direita → lente direita → lente esquerda → fora-direita
+   A mão é posicionada na lente direita (215, 50) em coordenadas SVG.
+   Os keyframes deslocam via translate (eixo X):
+     +140px → fora da tela à direita
+       0px  → lente direita (215)
+    -150px  → lente esquerda (65)
+*/
+@keyframes hand-clean {
+  0%   { transform: translate(140px, 0px);    } /* entra da direita */
+  10%  { transform: translate(0px,   0px);    } /* chega na lente direita */
+  16%  { transform: translate(-10px, -9px);  } /* esfrega */
+  22%  { transform: translate(10px,   9px);  } /* esfrega */
+  28%  { transform: translate(-8px,   7px);  } /* esfrega */
+  34%  { transform: translate(8px,  -6px);   } /* esfrega */
+  40%  { transform: translate(0px,   0px);   } /* centraliza lente direita */
+  48%  { transform: translate(-150px, 0px);  } /* desloca para lente esquerda */
+  54%  { transform: translate(-160px, -9px); } /* esfrega */
+  60%  { transform: translate(-140px,  9px); } /* esfrega */
+  66%  { transform: translate(-158px,  7px); } /* esfrega */
+  72%  { transform: translate(-142px, -6px); } /* esfrega */
+  78%  { transform: translate(-150px,  0px); } /* centraliza lente esquerda */
+  90%  { transform: translate(140px, -12px); } /* sai pela direita (com pequeno lift) */
+  100% { transform: translate(140px, -12px); }
+}
+
+/* Partículas de sujeira saindo enquanto o pano limpa */
+@keyframes dirt-fly {
+  0%   { opacity: 1; transform: translate(0, 0) scale(1);   }
+  100% { opacity: 0; transform: translate(var(--dx), var(--dy)) scale(0.2); }
+}
+
+/* Estrelinhas no final da limpeza */
+@keyframes sparkle-pop {
+  0%   { opacity: 0; transform: scale(0.3) translateY(6px); }
+  60%  { opacity: 1; transform: scale(1.3) translateY(-4px); }
+  100% { opacity: 0; transform: scale(1)   translateY(-8px); }
+}
+
+/* ══ Botão limpar ══ */
+@keyframes pulse-warn {
+  0%, 100% { box-shadow: 0 4px 16px rgba(245,158,11,0.4); transform: scale(1);    }
+  50%       { box-shadow: 0 4px 28px rgba(245,158,11,0.9); transform: scale(1.05); }
+}
+@keyframes pulse-urgent {
+  0%, 100% { box-shadow: 0 4px 16px rgba(239,68,68,0.5); transform: scale(1);    }
+  50%       { box-shadow: 0 4px 28px rgba(239,68,68,0.9); transform: scale(1.08); }
+}
