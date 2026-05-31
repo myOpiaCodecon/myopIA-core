@@ -1,3 +1,4 @@
+import { useEffect, useRef } from 'react'
 import { usePlan } from '../contexts/PlanContext'
 import { PLANS } from '../data/plans'
 import { useGlassesPhysics } from '../hooks/useGlassesPhysics'
@@ -20,12 +21,20 @@ export default function SimulatedLayout({ children }: Props) {
   const plan = PLANS.find(p => p.id === planId)!
 
   const { pos, isDragging, isBroken, onMouseDown, repair } = useGlassesPhysics(plan.canBreak)
-  const { dirt, isHandCleaning, wipe } = useLensCondition()
+  const { dirt, isHandCleaning, onLensMouseMove } = useLensCondition()
   const { isRaining, isWiperActive } = useRain()
   useRainSounds(isRaining, isWiperActive)
 
-  const showWarnBtn   = dirt >= 0.4 && dirt < 0.8 && !isHandCleaning && !isBroken
-  const showUrgentBtn = dirt >= 0.8 && !isHandCleaning && !isBroken
+  const posRef = useRef(pos)
+  posRef.current = pos
+
+  useEffect(() => {
+    const handler = (e: MouseEvent) => {
+      onLensMouseMove(e.clientX, e.clientY, posRef.current)
+    }
+    window.addEventListener('mousemove', handler)
+    return () => window.removeEventListener('mousemove', handler)
+  }, [onLensMouseMove])
 
   return (
     <>
@@ -35,51 +44,13 @@ export default function SimulatedLayout({ children }: Props) {
         <div style={{ position: 'fixed', inset: 0, zIndex: 1999, cursor: 'grabbing' }} />
       )}
 
-      {/* Chuva */}
       <RainCanvas active={isRaining} />
-
-      {/* Blur + sujeira nas lentes */}
       <BlurOverlay glassesPos={pos} dirt={dirt} />
-
-      {/* Limpador automático (ativado pela chuva) */}
       <WiperAnimation pos={pos} active={isWiperActive} />
-
-      {/* Mão com pano (limpeza manual de sujeira) */}
       <HandCleanAnimation pos={pos} active={isHandCleaning} />
-
-      {/* Frame do óculos — acima das camadas de sujeira */}
       <Glasses pos={pos} onMouseDown={onMouseDown} dragging={isDragging} isBroken={isBroken} />
-
       <ConfigPanel isBroken={isBroken} onRepair={repair} />
 
-      {/* Botão de limpeza manual — aparece com sujeira */}
-      {(showWarnBtn || showUrgentBtn) && (
-        <button
-          onClick={wipe}
-          style={{
-            position: 'fixed',
-            bottom: 80,
-            right: 24,
-            zIndex: 3001,
-            padding: '10px 20px',
-            borderRadius: 999,
-            border: 'none',
-            background: showUrgentBtn ? '#ef4444' : '#f59e0b',
-            color: '#fff',
-            fontWeight: 700,
-            fontSize: 13,
-            cursor: 'pointer',
-            fontFamily: 'system-ui, sans-serif',
-            animation: showUrgentBtn
-              ? 'pulse-urgent 0.7s ease-in-out infinite'
-              : 'pulse-warn 1.4s ease-in-out infinite',
-          }}
-        >
-          {showUrgentBtn ? '🚨 LIMPA AS LENTE' : '🧹 Limpar lentes'}
-        </button>
-      )}
-
-      {/* Indicador de chuva (debug visual) */}
       {isRaining && (
         <div style={{
           position: 'fixed', bottom: 24, left: 24, zIndex: 3001,
