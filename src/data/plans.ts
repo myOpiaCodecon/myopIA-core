@@ -32,7 +32,7 @@ export const PLANS: Plan[] = [
   {
     id: 'pro',
     name: 'Pro',
-    price: 'R$ 49/mês',
+    price: 'R$ 9,90/mês',
     tagline: 'Sofrimento premium.',
     gradient: 'from-indigo-500 to-violet-700',
     accent: '#818cf8',
@@ -48,7 +48,7 @@ export const PLANS: Plan[] = [
   {
     id: 'enterprise',
     name: 'Enterprise',
-    price: 'Consultar',
+    price: 'R$ 500/mês',
     tagline: 'Sofrimento corporativo.',
     gradient: 'from-amber-500 to-orange-600',
     accent: '#fbbf24',

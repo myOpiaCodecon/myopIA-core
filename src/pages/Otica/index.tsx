@@ -7,6 +7,65 @@ import { useCondition } from '../../contexts/ConditionContext'
 import { usePlan } from '../../contexts/PlanContext'
 import GlassesFrame from '../../components/GlassesFrame'
 
+// ── Seção de lente de contato (Enterprise) ────────────────────────────────────
+function ContactLensSection() {
+  const { contactLens, setContactLens } = usePlan()
+
+  return (
+    <div style={{ marginBottom: 36 }}>
+      <div style={{
+        fontSize: 11, fontWeight: 700, letterSpacing: '0.1em',
+        textTransform: 'uppercase', color: '#475569', marginBottom: 14,
+      }}>
+        Lente de Contato
+      </div>
+
+      <div
+        onClick={() => setContactLens(!contactLens)}
+        style={{
+          background: contactLens ? 'rgba(251,191,36,0.08)' : 'rgba(255,255,255,0.03)',
+          border: `1px solid ${contactLens ? 'rgba(251,191,36,0.4)' : 'rgba(255,255,255,0.08)'}`,
+          borderRadius: 14,
+          padding: '16px 18px',
+          display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 16,
+          cursor: 'pointer',
+          transition: 'border-color 0.2s, background 0.2s',
+        }}
+      >
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <span style={{ fontSize: 26 }}>{contactLens ? '👁️' : '🥽'}</span>
+          <div>
+            <div style={{ fontSize: 14, fontWeight: 700, color: contactLens ? '#fde68a' : '#e2e8f0' }}>
+              {contactLens ? 'Lente ativa' : 'Lente de contato'}
+            </div>
+            <div style={{ fontSize: 12, color: '#475569', marginTop: 3 }}>
+              {contactLens
+                ? 'Visão normal — sem blur, sem chuva'
+                : 'Ative para ter visão completamente normal'}
+            </div>
+          </div>
+        </div>
+
+        <div
+          style={{
+            width: 44, height: 24, borderRadius: 999, flexShrink: 0,
+            background: contactLens ? '#fbbf24' : 'rgba(255,255,255,0.1)',
+            position: 'relative', transition: 'background 0.2s',
+          }}
+        >
+          <div style={{
+            position: 'absolute', top: 3,
+            left: contactLens ? 23 : 3,
+            width: 18, height: 18, borderRadius: '50%',
+            background: '#fff', transition: 'left 0.2s',
+            boxShadow: '0 1px 4px rgba(0,0,0,0.3)',
+          }} />
+        </div>
+      </div>
+    </div>
+  )
+}
+
 const SECTIONS: { label: string; shape: GlassesSkin['shape'] }[] = [
   { label: 'Redondo',           shape: undefined },
   { label: 'Quadrado',          shape: 'square'  },
@@ -292,6 +351,7 @@ export default function OticaPage() {
   const navigate = useNavigate()
   const { planId } = usePlan()
   const isPro = planId === 'pro' || planId === 'enterprise'
+  const isEnterprise = planId === 'enterprise'
   const { previewSkinId, cancelPreview } = useSkin()
 
   const [payingSkinId, setPayingSkinId] = useState<GlassesSkin['id'] | null>(null)
@@ -383,6 +443,9 @@ export default function OticaPage() {
             </div>
           </div>
         )}
+
+        {/* Lente de contato — Enterprise */}
+        {isEnterprise && <ContactLensSection />}
 
         {/* Simulação de doenças — PRO */}
         {isPro && <ConditionsSection />}

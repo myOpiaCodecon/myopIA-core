@@ -28,31 +28,36 @@ export default function SimulatedLayout({ children }: Props) {
     if (segment) localStorage.setItem(`myopia-visited-${segment}`, '1')
   }, [location.pathname])
 
-  const { planId } = usePlan()
+  const { planId, contactLens } = usePlan()
   const plan = PLANS.find(p => p.id === planId)!
   const { activeSkinId } = useSkin()
   const skin = SKINS.find(s => s.id === activeSkinId)!
 
   const { pos, isDragging, isBroken, onMouseDown, repair } = useGlassesPhysics(plan.canBreak)
   const { dirt, onClothMove, onClothRelease } = useLensCondition()
-  const { isRaining, isWiperActive } = useRain()
+  const { isRaining, isWiperActive } = useRain(contactLens)
   useRainSounds(isRaining, isWiperActive)
 
   return (
     <>
       {children}
 
-      {isDragging && (
+      {!contactLens && isDragging && (
         <div style={{ position: 'fixed', inset: 0, zIndex: 1999, cursor: 'grabbing' }} />
       )}
 
-      <RainCanvas active={isRaining} />
-      <BlurOverlay glassesPos={pos} dirt={dirt} skin={skin} />
-      <ConditionOverlay glassesPos={pos} skin={skin} />
-      <WiperAnimation pos={pos} active={isWiperActive} />
-      <CleaningCloth dirt={dirt} glassesPos={pos} onClothMove={onClothMove} onClothRelease={onClothRelease} />
-      <Glasses pos={pos} onMouseDown={onMouseDown} dragging={isDragging} isBroken={isBroken} skin={skin} />
-      <ConfigPanel isBroken={isBroken} onRepair={repair} />
+      {!contactLens && <RainCanvas active={isRaining} />}
+      {!contactLens && <BlurOverlay glassesPos={pos} dirt={dirt} skin={skin} />}
+      {!contactLens && <ConditionOverlay glassesPos={pos} skin={skin} />}
+      {!contactLens && <WiperAnimation pos={pos} active={isWiperActive} />}
+      {!contactLens && (
+        <CleaningCloth dirt={dirt} glassesPos={pos} onClothMove={onClothMove} onClothRelease={onClothRelease} />
+      )}
+      {!contactLens && (
+        <Glasses pos={pos} onMouseDown={onMouseDown} dragging={isDragging} isBroken={isBroken} skin={skin} />
+      )}
+
+      <ConfigPanel isBroken={!contactLens && isBroken} onRepair={repair} />
 
       {isRaining && (
         <div style={{

@@ -1,13 +1,18 @@
 import { useState, useEffect, useRef } from 'react'
 
-export function useRain() {
+export function useRain(disabled = false) {
   const [isRaining, setIsRaining] = useState(false)
   const [isWiperActive, setIsWiperActive] = useState(false)
   const rainingRef  = useRef(false)
   const wipeLoopRef = useRef(false)
 
-  // Agenda ciclos de chuva aleatórios
   useEffect(() => {
+    if (disabled) {
+      rainingRef.current = false
+      setIsRaining(false)
+      return
+    }
+
     let rainTimeout: ReturnType<typeof setTimeout>
     let stopTimeout: ReturnType<typeof setTimeout>
 
@@ -29,7 +34,7 @@ export function useRain() {
       clearTimeout(rainTimeout)
       clearTimeout(stopTimeout)
     }
-  }, [])
+  }, [disabled])
 
   // Limpador automático enquanto chove: 10s ligado → 3s desligado → repete
   useEffect(() => {
