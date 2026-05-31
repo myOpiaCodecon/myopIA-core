@@ -61,7 +61,7 @@ export default function SimulatedLayout({ children }: Props) {
 
       {isRaining && (
         <div style={{
-          position: 'fixed', bottom: 24, left: 24, zIndex: 3001,
+          position: 'fixed', bottom: 80, left: 24, zIndex: 3001,
           padding: '6px 14px', borderRadius: 999,
           background: 'rgba(15,30,60,0.8)',
           color: '#93c5fd', fontSize: 12, fontWeight: 600,
