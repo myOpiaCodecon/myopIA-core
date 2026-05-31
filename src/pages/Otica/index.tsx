@@ -292,7 +292,7 @@ export default function OticaPage() {
   const navigate = useNavigate()
   const { planId } = usePlan()
   const isPro = planId === 'pro' || planId === 'enterprise'
-  const { previewSkinId, cancelPreview, buySkin } = useSkin()
+  const { previewSkinId, cancelPreview } = useSkin()
 
   const [payingSkinId, setPayingSkinId] = useState<GlassesSkin['id'] | null>(null)
   const payingSkin = payingSkinId ? SKINS.find(s => s.id === payingSkinId) ?? null : null
