@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
 import { usePlan } from '../contexts/PlanContext'
+import { useSkin } from '../contexts/SkinContext'
 import { PLANS } from '../data/plans'
+import { SKINS } from '../data/skins'
 import { useGlassesPhysics } from '../hooks/useGlassesPhysics'
 import { useLensCondition } from '../hooks/useLensCondition'
 import { useRain } from '../hooks/useRain'
@@ -19,6 +21,8 @@ interface Props {
 export default function SimulatedLayout({ children }: Props) {
   const { planId } = usePlan()
   const plan = PLANS.find(p => p.id === planId)!
+  const { activeSkinId } = useSkin()
+  const skin = SKINS.find(s => s.id === activeSkinId)!
 
   const { pos, isDragging, isBroken, onMouseDown, repair } = useGlassesPhysics(plan.canBreak)
   const { dirt, isHandCleaning, onLensMouseMove } = useLensCondition()
@@ -45,10 +49,10 @@ export default function SimulatedLayout({ children }: Props) {
       )}
 
       <RainCanvas active={isRaining} />
-      <BlurOverlay glassesPos={pos} dirt={dirt} />
+      <BlurOverlay glassesPos={pos} dirt={dirt} skin={skin} />
       <WiperAnimation pos={pos} active={isWiperActive} />
       <HandCleanAnimation pos={pos} active={isHandCleaning} />
-      <Glasses pos={pos} onMouseDown={onMouseDown} dragging={isDragging} isBroken={isBroken} />
+      <Glasses pos={pos} onMouseDown={onMouseDown} dragging={isDragging} isBroken={isBroken} skin={skin} />
       <ConfigPanel isBroken={isBroken} onRepair={repair} />
 
       {isRaining && (

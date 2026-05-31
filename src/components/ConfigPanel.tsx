@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { usePlan } from '../contexts/PlanContext'
+import { useSkin } from '../contexts/SkinContext'
 import { PLANS } from '../data/plans'
 
 const STORAGE_REPAIR_START = 'myopia-repair-start'
@@ -18,8 +20,10 @@ function formatCountdown(ms: number) {
 }
 
 export default function ConfigPanel({ isBroken, onRepair }: Props) {
+  const navigate = useNavigate()
   const { planId } = usePlan()
   const plan = PLANS.find(p => p.id === planId)!
+  const { previewSkinId } = useSkin()
 
   const [repairStart, setRepairStart] = useState<number | null>(() => {
     const v = localStorage.getItem(STORAGE_REPAIR_START)
@@ -182,39 +186,69 @@ export default function ConfigPanel({ isBroken, onRepair }: Props) {
         </div>
       )}
 
-      {/* Botão flutuante */}
-      <button
-        onClick={() => setOpen(v => !v)}
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          padding: '10px 16px',
-          borderRadius: 999,
-          border: '1px solid rgba(255,255,255,0.12)',
-          background: 'rgba(15,23,42,0.88)',
-          backdropFilter: 'blur(12px)',
-          color: '#fff',
-          fontSize: 13,
-          fontWeight: 600,
-          cursor: 'pointer',
-          boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
-        }}
-      >
-        <span>⚙️</span>
-        <span style={{ color: plan.accent }}>{plan.name}</span>
-        {isBroken && (
-          <span
-            style={{
-              width: 8,
-              height: 8,
-              borderRadius: '50%',
-              background: '#f87171',
-              boxShadow: '0 0 6px #f87171',
-            }}
-          />
-        )}
-      </button>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
+        {/* Botão Ótica */}
+        <button
+          onClick={() => navigate('/otica', { state: { from: window.location.pathname } })}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 16px',
+            borderRadius: 999,
+            border: '1px solid rgba(255,255,255,0.12)',
+            background: 'rgba(15,23,42,0.88)',
+            backdropFilter: 'blur(12px)',
+            color: '#fff',
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+            fontFamily: 'system-ui, sans-serif',
+          }}
+        >
+          <span>👓</span>
+          <span>Ótica</span>
+          {previewSkinId && (
+            <span style={{
+              width: 8, height: 8, borderRadius: '50%',
+              background: '#a78bfa',
+              boxShadow: '0 0 6px #a78bfa',
+            }} />
+          )}
+        </button>
+
+        {/* Botão Config */}
+        <button
+          onClick={() => setOpen(v => !v)}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 16px',
+            borderRadius: 999,
+            border: '1px solid rgba(255,255,255,0.12)',
+            background: 'rgba(15,23,42,0.88)',
+            backdropFilter: 'blur(12px)',
+            color: '#fff',
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+            fontFamily: 'system-ui, sans-serif',
+          }}
+        >
+          <span>⚙️</span>
+          <span style={{ color: plan.accent }}>{plan.name}</span>
+          {isBroken && (
+            <span style={{
+              width: 8, height: 8, borderRadius: '50%',
+              background: '#f87171', boxShadow: '0 0 6px #f87171',
+            }} />
+          )}
+        </button>
+      </div>
+
     </div>
   )
 }
