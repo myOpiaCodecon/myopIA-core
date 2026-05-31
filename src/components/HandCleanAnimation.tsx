@@ -29,36 +29,19 @@ export default function HandCleanAnimation({ pos, active }: Props) {
         fill="none" style={{ overflow: 'visible' }}
       >
         {/* Grupo da mão — anima entre as lentes e sai */}
-        <g style={{
-          animation: 'hand-clean 2.6s ease-in-out both',
-        }}>
-          {/* Pano/flanela */}
-          <ellipse cx="215" cy="72" rx="26" ry="18" fill="#d4a96a" />
-          <ellipse cx="215" cy="72" rx="22" ry="14" fill="#c49058" />
-          {/* Textura do pano */}
-          <line x1="200" y1="67" x2="230" y2="67" stroke="#b07840" strokeWidth="1.2" opacity="0.6" />
-          <line x1="202" y1="73" x2="228" y2="73" stroke="#b07840" strokeWidth="1.2" opacity="0.6" />
-          <line x1="200" y1="79" x2="230" y2="79" stroke="#b07840" strokeWidth="1.2" opacity="0.6" />
-          <line x1="208" y1="60" x2="208" y2="84" stroke="#b07840" strokeWidth="1"   opacity="0.4" />
-          <line x1="222" y1="60" x2="222" y2="84" stroke="#b07840" strokeWidth="1"   opacity="0.4" />
+        <g style={{ animation: 'hand-clean 2.6s ease-in-out both' }}>
 
-          {/* Palma */}
-          <rect x="201" y="48" width="28" height="20" rx="7" fill="#ffc999" />
-          {/* Dedos */}
-          <rect x="204" y="30" width="8" height="20" rx="4" fill="#ffc999" />
-          <rect x="213" y="26" width="8" height="24" rx="4" fill="#ffc999" />
-          <rect x="222" y="28" width="8" height="22" rx="4" fill="#ffc999" />
-          <rect x="231" y="32" width="7" height="18" rx="4" fill="#ffc999" />
-          {/* Vincos dos nós dos dedos */}
-          <line x1="208" y1="44" x2="208" y2="48" stroke="#e8a87c" strokeWidth="1.2" />
-          <line x1="217" y1="44" x2="217" y2="48" stroke="#e8a87c" strokeWidth="1.2" />
-          <line x1="226" y1="44" x2="226" y2="48" stroke="#e8a87c" strokeWidth="1.2" />
-          <line x1="234" y1="45" x2="234" y2="48" stroke="#e8a87c" strokeWidth="1.2" />
-          {/* Unhas */}
-          <rect x="205.5" y="30" width="5" height="5" rx="2" fill="#ffb8a0" opacity="0.7" />
-          <rect x="214.5" y="26" width="5" height="5" rx="2" fill="#ffb8a0" opacity="0.7" />
-          <rect x="223.5" y="28" width="5" height="5" rx="2" fill="#ffb8a0" opacity="0.7" />
-          <rect x="232" y="32" width="4.5" height="5" rx="2" fill="#ffb8a0" opacity="0.7" />
+          {/* Pano/flanela */}
+          <ellipse cx="215" cy="72" rx="26" ry="18" fill="#e8e8e8" />
+          <ellipse cx="215" cy="72" rx="22" ry="14" fill="#f5f5f5" />
+          <line x1="200" y1="67" x2="230" y2="67" stroke="#c0c0c0" strokeWidth="1.2" opacity="0.6" />
+          <line x1="202" y1="73" x2="228" y2="73" stroke="#c0c0c0" strokeWidth="1.2" opacity="0.6" />
+          <line x1="200" y1="79" x2="230" y2="79" stroke="#c0c0c0" strokeWidth="1.2" opacity="0.6" />
+          <line x1="208" y1="60" x2="208" y2="84" stroke="#c0c0c0" strokeWidth="1"   opacity="0.4" />
+          <line x1="222" y1="60" x2="222" y2="84" stroke="#c0c0c0" strokeWidth="1"   opacity="0.4" />
+
+
+
         </g>
 
         {/* Partículas de sujeira saindo (aparecem durante a limpeza) */}
