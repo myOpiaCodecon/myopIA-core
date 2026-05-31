@@ -147,7 +147,9 @@ src/
 
 ---
 
-## Rodando localmente
+## Passos para instalação
+
+Necessário ter NodeJS instalado
 
 ```bash
 npm install
@@ -158,6 +160,7 @@ npm run dev
 # Checar tipos + build de produção
 npm run build
 ```
+Se você tentar rodar 73 vezes e não funcionar, desista de ser dev. Obs.: o Atacação está contratando
 
 ---
 
