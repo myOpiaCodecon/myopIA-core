@@ -3,7 +3,6 @@ import type { GlassesPos } from './useGlassesPhysics'
 
 const LENS_H_OFFSET = 75
 const LENS_RADIUS   = 49
-const MIN_SWEEP_PX  = 30
 
 function isOverLens(mx: number, my: number, pos: GlassesPos) {
   const rad  = pos.rotation * (Math.PI / 180)
@@ -19,20 +18,9 @@ function isOverLens(mx: number, my: number, pos: GlassesPos) {
   )
 }
 
-function randomSwipeTarget() {
-  return 3 + Math.floor(Math.random() * 5) // 3 a 7 — irritante mas possível
-}
-
 export function useLensCondition() {
-  const [dirt, setDirt]               = useState(0)
-  const [isHandCleaning, setIsHandCleaning] = useState(false)
-
-  const isCleaningRef    = useRef(false)
-  const lastXRef         = useRef<number | null>(null)
-  const lastDirRef       = useRef<number>(0)
-  const sweepStartXRef   = useRef<number>(0)
-  const swipeCountRef    = useRef<number>(0)
-  const requiredRef      = useRef<number>(randomSwipeTarget())
+  const [dirt, setDirt] = useState(0)
+  const lastClothPosRef = useRef<{ x: number; y: number } | null>(null)
 
   useEffect(() => {
     const id = setInterval(() => {
@@ -41,56 +29,22 @@ export function useLensCondition() {
     return () => clearInterval(id)
   }, [])
 
-  const wipe = useCallback(() => {
-    if (isCleaningRef.current) return
-    isCleaningRef.current = true
-    setIsHandCleaning(true)
-    swipeCountRef.current  = 0
-    requiredRef.current    = randomSwipeTarget()
-    setTimeout(() => {
-      setDirt(0)
-      setIsHandCleaning(false)
-      isCleaningRef.current = false
-    }, 2600)
+  const onClothMove = useCallback((mx: number, my: number, pos: GlassesPos) => {
+    if (!isOverLens(mx, my, pos)) {
+      lastClothPosRef.current = { x: mx, y: my }
+      return
+    }
+    const last = lastClothPosRef.current
+    const dist = last ? Math.sqrt((mx - last.x) ** 2 + (my - last.y) ** 2) : 0
+    lastClothPosRef.current = { x: mx, y: my }
+    if (dist > 1) {
+      setDirt(d => Math.max(0, d - dist * 0.005))
+    }
   }, [])
 
-  const onLensMouseMove = useCallback((mx: number, my: number, pos: GlassesPos) => {
-    if (isCleaningRef.current) return
+  const onClothRelease = useCallback(() => {
+    lastClothPosRef.current = null
+  }, [])
 
-    if (!isOverLens(mx, my, pos)) {
-      lastXRef.current  = null
-      lastDirRef.current = 0
-      return
-    }
-
-    if (lastXRef.current === null) {
-      lastXRef.current     = mx
-      sweepStartXRef.current = mx
-      return
-    }
-
-    const dx  = mx - lastXRef.current
-    lastXRef.current = mx
-    if (dx === 0) return
-
-    const dir = dx > 0 ? 1 : -1
-
-    if (lastDirRef.current === 0) {
-      lastDirRef.current     = dir
-      sweepStartXRef.current = mx
-      return
-    }
-
-    if (dir !== lastDirRef.current && Math.abs(mx - sweepStartXRef.current) >= MIN_SWEEP_PX) {
-      swipeCountRef.current++
-      sweepStartXRef.current = mx
-      lastDirRef.current     = dir
-
-      if (swipeCountRef.current >= requiredRef.current) {
-        wipe()
-      }
-    }
-  }, [wipe])
-
-  return { dirt, isHandCleaning, onLensMouseMove }
+  return { dirt, onClothMove, onClothRelease }
 }

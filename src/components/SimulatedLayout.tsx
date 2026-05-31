@@ -1,4 +1,3 @@
-import { useEffect, useRef } from 'react'
 import { usePlan } from '../contexts/PlanContext'
 import { useSkin } from '../contexts/SkinContext'
 import { PLANS } from '../data/plans'
@@ -12,8 +11,8 @@ import Glasses from './Glasses'
 import ConfigPanel from './ConfigPanel'
 import RainCanvas from './RainCanvas'
 import WiperAnimation from './WiperAnimation'
-import HandCleanAnimation from './HandCleanAnimation'
 import ConditionOverlay from './ConditionOverlay'
+import CleaningCloth from './CleaningCloth'
 
 interface Props {
   children: React.ReactNode
@@ -26,20 +25,9 @@ export default function SimulatedLayout({ children }: Props) {
   const skin = SKINS.find(s => s.id === activeSkinId)!
 
   const { pos, isDragging, isBroken, onMouseDown, repair } = useGlassesPhysics(plan.canBreak)
-  const { dirt, isHandCleaning, onLensMouseMove } = useLensCondition()
+  const { dirt, onClothMove, onClothRelease } = useLensCondition()
   const { isRaining, isWiperActive } = useRain()
   useRainSounds(isRaining, isWiperActive)
-
-  const posRef = useRef(pos)
-  posRef.current = pos
-
-  useEffect(() => {
-    const handler = (e: MouseEvent) => {
-      onLensMouseMove(e.clientX, e.clientY, posRef.current)
-    }
-    window.addEventListener('mousemove', handler)
-    return () => window.removeEventListener('mousemove', handler)
-  }, [onLensMouseMove])
 
   return (
     <>
@@ -53,7 +41,7 @@ export default function SimulatedLayout({ children }: Props) {
       <BlurOverlay glassesPos={pos} dirt={dirt} skin={skin} />
       <ConditionOverlay glassesPos={pos} skin={skin} />
       <WiperAnimation pos={pos} active={isWiperActive} />
-      <HandCleanAnimation pos={pos} active={isHandCleaning} />
+      <CleaningCloth dirt={dirt} glassesPos={pos} onClothMove={onClothMove} onClothRelease={onClothRelease} />
       <Glasses pos={pos} onMouseDown={onMouseDown} dragging={isDragging} isBroken={isBroken} skin={skin} />
       <ConfigPanel isBroken={isBroken} onRepair={repair} />
 
