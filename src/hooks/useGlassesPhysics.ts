@@ -1,14 +1,16 @@
 import { useState, useEffect, useRef, useCallback } from 'react'
 
-const GRAVITY    = 0.5
-const FRICTION   = 0.90   // multiplicador horizontal por frame
-const BOUNCE_Y   = 0.35   // coeficiente de quique no chão/teto
-const BOUNCE_X   = 0.45   // coeficiente de quique nas paredes
-const MAX_V      = 20     // velocidade máxima de soltura (px/frame)
+const GRAVITY         = 0.5
+const FRICTION        = 0.90
+const BOUNCE_Y        = 0.35
+const BOUNCE_X        = 0.45
+const MAX_V           = 20
+const BREAK_THRESHOLD = 18   // px/frame de velocidade vertical no impacto
 
-// Metade das dimensões do SVG do óculos (280 × 100)
 const HALF_W = 140
 const HALF_H = 50
+
+const STORAGE_BROKEN = 'myopia-broken'
 
 const getBounds = () => ({
   minX: HALF_W,
@@ -23,8 +25,7 @@ export interface GlassesPos {
   rotation: number
 }
 
-export function useGlassesPhysics() {
-  // Estado mutável mantido em ref — evita closures stale no loop de física
+export function useGlassesPhysics(canBreak: boolean) {
   const phys = useRef({
     x: window.innerWidth  / 2,
     y: window.innerHeight - HALF_H,
@@ -40,11 +41,13 @@ export function useGlassesPhysics() {
     rotation: 0,
   })
   const [isDragging, setIsDragging] = useState(false)
+  const [isBroken, setIsBroken] = useState(() => {
+    return localStorage.getItem(STORAGE_BROKEN) === 'true'
+  })
 
   const rafRef        = useRef<number | null>(null)
   const isDraggingRef = useRef(false)
   const dragOffsetRef = useRef({ x: 0, y: 0 })
-  // Histórico de posições para calcular velocidade no soltar
   const posHistRef    = useRef<{ x: number; y: number; t: number }[]>([])
 
   const stopPhysics = useCallback(() => {
@@ -54,7 +57,12 @@ export function useGlassesPhysics() {
     }
   }, [])
 
-  // Tick de física em ref para não ter problema de closure stale em RAF
+  const repair = useCallback(() => {
+    phys.current.isFalling = false
+    localStorage.removeItem(STORAGE_BROKEN)
+    setIsBroken(false)
+  }, [])
+
   const tickRef = useRef<() => void>(() => {})
   tickRef.current = () => {
     const p = phys.current
@@ -64,13 +72,26 @@ export function useGlassesPhysics() {
     p.vx *= FRICTION
     p.x  += p.vx
     p.y  += p.vy
-    p.rotation += p.vx * 0.4   // rotação proporcional à velocidade horizontal
+    p.rotation += p.vx * 0.4
 
     // Chão
     if (p.y >= b.maxY) {
+      const impactVy = Math.abs(p.vy)
+
+      if (canBreak && impactVy > BREAK_THRESHOLD) {
+        p.y        = b.maxY
+        p.vx       = 0
+        p.vy       = 0
+        p.isFalling = false
+        localStorage.setItem(STORAGE_BROKEN, 'true')
+        setIsBroken(true)
+        setPos({ x: p.x, y: p.y, rotation: p.rotation })
+        return  // para o loop sem agendar próximo frame
+      }
+
       p.y  = b.maxY
       p.vy = -Math.abs(p.vy) * BOUNCE_Y
-      p.rotation *= 0.6         // amortecer rotação no impacto
+      p.rotation *= 0.6
       if (Math.abs(p.vy) < 1.5) {
         p.vy = 0
         p.vx *= 0.4
@@ -95,7 +116,6 @@ export function useGlassesPhysics() {
       p.vx = -Math.abs(p.vx) * BOUNCE_X
     }
 
-    // Verificar se assentou no chão
     const settled =
       p.y  >= b.maxY - 0.5 &&
       Math.abs(p.vy) < 0.5  &&
@@ -118,7 +138,6 @@ export function useGlassesPhysics() {
 
   const startFalling = useCallback((vx: number, vy: number) => {
     stopPhysics()
-    // Limitar velocidade inicial para evitar teleporte para fora da tela
     phys.current.vx = Math.max(-MAX_V, Math.min(MAX_V, vx))
     phys.current.vy = Math.max(-MAX_V, Math.min(MAX_V, vy))
     phys.current.isFalling = true
@@ -126,9 +145,9 @@ export function useGlassesPhysics() {
   }, [stopPhysics])
 
   const onMouseDown = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
+    if (phys.current.isFalling) return  // impede pegar durante queda
     e.preventDefault()
     stopPhysics()
-    phys.current.isFalling = false
     isDraggingRef.current = true
     setIsDragging(true)
     dragOffsetRef.current = {
@@ -149,7 +168,6 @@ export function useGlassesPhysics() {
       phys.current.x = newX
       phys.current.y = newY
 
-      // Manter janela de 80ms para calcular velocidade no soltar
       const now = performance.now()
       posHistRef.current.push({ x: newX, y: newY, t: now })
       const cutoff = now - 80
@@ -163,7 +181,6 @@ export function useGlassesPhysics() {
       isDraggingRef.current = false
       setIsDragging(false)
 
-      // Calcular velocidade a partir do histórico (px por frame a 60fps)
       const hist = posHistRef.current
       let vx = 0
       let vy = 0
@@ -189,8 +206,7 @@ export function useGlassesPhysics() {
     }
   }, [startFalling])
 
-  // Limpar RAF ao desmontar
   useEffect(() => () => { stopPhysics() }, [stopPhysics])
 
-  return { pos, isDragging, onMouseDown }
+  return { pos, isDragging, isBroken, onMouseDown, repair }
 }

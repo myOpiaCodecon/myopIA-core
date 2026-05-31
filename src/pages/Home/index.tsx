@@ -1,5 +1,8 @@
 import { Link } from 'react-router-dom'
 import logoUrl from '../../assets/logo.svg'
+import { PLANS } from '../../data/plans'
+import { usePlan } from '../../contexts/PlanContext'
+import type { PlanId } from '../../data/plans'
 
 const APPS = [
   {
@@ -48,7 +51,15 @@ const APPS = [
   },
 ]
 
+const PLAN_ICONS: Record<PlanId, string> = {
+  free: '🕶️',
+  pro: '💎',
+  enterprise: '🏢',
+}
+
 export default function Home() {
+  const { planId, setPlan } = usePlan()
+
   return (
     <div
       className="min-h-screen flex flex-col items-center justify-center p-8 gap-10"
@@ -96,6 +107,104 @@ export default function Home() {
             </div>
           </Link>
         ))}
+      </div>
+
+      {/* Planos */}
+      <div className="w-full max-w-[760px] flex flex-col gap-4">
+        <h2
+          className="text-center text-white/60 text-[12px] uppercase tracking-widest"
+          style={{ fontFamily: 'Roboto, Arial, sans-serif' }}
+        >
+          Escolha seu nível de sofrimento
+        </h2>
+
+        <div className="grid grid-cols-3 gap-3">
+          {PLANS.map(plan => {
+            const active = planId === plan.id
+            return (
+              <button
+                key={plan.id}
+                onClick={() => setPlan(plan.id)}
+                style={{
+                  background: active
+                    ? `linear-gradient(135deg, ${plan.accent}22, ${plan.accent}11)`
+                    : 'rgba(255,255,255,0.04)',
+                  border: active
+                    ? `1.5px solid ${plan.accent}`
+                    : '1.5px solid rgba(255,255,255,0.08)',
+                  borderRadius: 16,
+                  padding: '16px 14px',
+                  textAlign: 'left',
+                  cursor: 'pointer',
+                  transition: 'all 0.18s',
+                  position: 'relative',
+                }}
+              >
+                {active && (
+                  <div
+                    style={{
+                      position: 'absolute',
+                      top: 10,
+                      right: 12,
+                      fontSize: 10,
+                      fontWeight: 700,
+                      color: plan.accent,
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                    }}
+                  >
+                    Ativo
+                  </div>
+                )}
+
+                <div style={{ fontSize: 22, marginBottom: 6 }}>{PLAN_ICONS[plan.id]}</div>
+
+                <div
+                  style={{
+                    fontFamily: 'Roboto, Arial, sans-serif',
+                    fontWeight: 700,
+                    fontSize: 16,
+                    color: active ? plan.accent : '#f1f5f9',
+                    marginBottom: 2,
+                  }}
+                >
+                  {plan.name}
+                </div>
+
+                <div
+                  style={{
+                    fontSize: 12,
+                    color: '#64748b',
+                    marginBottom: 10,
+                    fontFamily: 'Roboto, Arial, sans-serif',
+                  }}
+                >
+                  {plan.price}
+                </div>
+
+                <ul style={{ listStyle: 'none', padding: 0, margin: 0, display: 'flex', flexDirection: 'column', gap: 4 }}>
+                  {plan.features.map((feat, i) => (
+                    <li
+                      key={i}
+                      style={{
+                        fontSize: 11,
+                        color: active ? '#cbd5e1' : '#475569',
+                        display: 'flex',
+                        gap: 5,
+                        alignItems: 'flex-start',
+                        fontFamily: 'Roboto, Arial, sans-serif',
+                        lineHeight: 1.4,
+                      }}
+                    >
+                      <span style={{ color: plan.accent, flexShrink: 0, marginTop: 1 }}>✓</span>
+                      {feat}
+                    </li>
+                  ))}
+                </ul>
+              </button>
+            )
+          })}
+        </div>
       </div>
 
       {/* Footer */}
