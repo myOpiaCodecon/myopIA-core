@@ -1,4 +1,12 @@
-# MyOpia
+<p align="center">
+  <img
+    width="223"
+    height="233"
+    alt="image"
+    src="https://github.com/user-attachments/assets/7e026217-1611-42ed-bf7a-a0e4022693e6"
+  />
+</p>
+
 
 > *O primeiro simulador de miopia extrema focado em proporcionar uma experiência autêntica, imersiva e desnecessariamente inconveniente.*
 
