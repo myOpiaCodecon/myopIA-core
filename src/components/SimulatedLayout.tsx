@@ -1,3 +1,5 @@
+import { useEffect, useRef } from 'react'
+import { useLocation } from 'react-router-dom'
 import { usePlan } from '../contexts/PlanContext'
 import { useSkin } from '../contexts/SkinContext'
 import { PLANS } from '../data/plans'
@@ -19,6 +21,13 @@ interface Props {
 }
 
 export default function SimulatedLayout({ children }: Props) {
+  const location = useLocation()
+
+  useEffect(() => {
+    const segment = location.pathname.split('/')[1]
+    if (segment) localStorage.setItem(`myopia-visited-${segment}`, '1')
+  }, [location.pathname])
+
   const { planId } = usePlan()
   const plan = PLANS.find(p => p.id === planId)!
   const { activeSkinId } = useSkin()

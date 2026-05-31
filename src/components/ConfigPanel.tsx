@@ -58,6 +58,7 @@ export default function ConfigPanel({ isBroken, onRepair }: Props) {
   }, [isBroken])
 
   const requestRepair = () => {
+    localStorage.setItem('myopia-ever-repaired', '1')
     if (plan.repairTimeMs === 0) {
       // Pro: instantâneo
       onRepair()
@@ -187,6 +188,30 @@ export default function ConfigPanel({ isBroken, onRepair }: Props) {
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: 8, alignItems: 'flex-end' }}>
+        {/* Botão Missões */}
+        <button
+          onClick={() => navigate('/missoes')}
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: 8,
+            padding: '10px 16px',
+            borderRadius: 999,
+            border: '1px solid rgba(255,255,255,0.12)',
+            background: 'rgba(15,23,42,0.88)',
+            backdropFilter: 'blur(12px)',
+            color: '#fff',
+            fontSize: 13,
+            fontWeight: 600,
+            cursor: 'pointer',
+            boxShadow: '0 4px 16px rgba(0,0,0,0.3)',
+            fontFamily: 'system-ui, sans-serif',
+          }}
+        >
+          <span>🎯</span>
+          <span>Missões</span>
+        </button>
+
         {/* Botão Ótica */}
         <button
           onClick={() => navigate('/otica', { state: { from: window.location.pathname } })}

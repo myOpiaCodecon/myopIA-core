@@ -7,6 +7,7 @@ import YoutubeWatch from './pages/Youtube/Watch'
 import Windows from './pages/Windows'
 import Captcha from './pages/captcha'
 import OticaPage from './pages/Otica'
+import MissoesPage from './pages/Missoes'
 import SimulatedLayout from './components/SimulatedLayout'
 
 function App() {
@@ -21,6 +22,7 @@ function App() {
         <Route path="/youtube/watch" element={<SimulatedLayout><YoutubeWatch /></SimulatedLayout>} />
         <Route path="/captcha" element={<SimulatedLayout><Captcha /></SimulatedLayout>} />
         <Route path="/otica" element={<SimulatedLayout><OticaPage /></SimulatedLayout>} />
+        <Route path="/missoes" element={<SimulatedLayout><MissoesPage /></SimulatedLayout>} />
       </Routes>
     </BrowserRouter>
   )
