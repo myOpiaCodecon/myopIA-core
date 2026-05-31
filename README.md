@@ -12,7 +12,7 @@
 
 ---
 
-## Sobre a Claude Brothers
+## Nossa visão: Claude Brothers
 
 Somos a **Claude Brothers**, um grupo comprometido com a criação de soluções tecnológicas para problemas que ninguém pediu para resolver.
 
@@ -20,7 +20,7 @@ Nossa empresa é focada na **UU — User Unexperienced**: a DESexperiência do U
 
 ---
 
-## O Produto
+## Visão do produto
 
 Apresentamos o **MyOpia**: nossa plataforma aplica um avançado sistema de degradação visual em tempo real, tornando toda a área de trabalho propositalmente desfocada. Para recuperar a visão, o usuário deve manipular um par de óculos virtual pela tela, reproduzindo fielmente os desafios do cotidiano de quem depende de correção visual.
 
@@ -161,6 +161,8 @@ npm run dev
 npm run build
 ```
 Se você tentar rodar 73 vezes e não funcionar, desista de ser dev. Obs.: o Atacação está contratando
+
+Pegou a visão?!
 
 ---
 
