@@ -1,73 +1,156 @@
-# React + TypeScript + Vite
+# MyOpia
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+> *O primeiro simulador de miopia extrema focado em proporcionar uma experiência autêntica, imersiva e desnecessariamente inconveniente.*
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Sobre a Claude Brothers
 
-## React Compiler
+Somos a **Claude Brothers**, um grupo comprometido com a criação de soluções tecnológicas para problemas que ninguém pediu para resolver.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Nossa empresa é focada na **UU — User Unexperienced**: a DESexperiência do Usuário. Uma nova definição de design que traz o conceito de **acessibilidade reversa**.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## O Produto
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+Apresentamos o **MyOpia**: nossa plataforma aplica um avançado sistema de degradação visual em tempo real, tornando toda a área de trabalho propositalmente desfocada. Para recuperar a visão, o usuário deve manipular um par de óculos virtual pela tela, reproduzindo fielmente os desafios do cotidiano de quem depende de correção visual.
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+Mas não paramos por aí. Os óculos exigem manutenção constante: podem embaçar, acumular gotas de chuva, sujar e até quebrar caso sejam derrubados de uma altura excessiva. Dessa forma, oferecemos uma experiência completa de gerenciamento de visão, responsabilidade óptica e sofrimento digital.
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+Nossa missão é simples: **transformar uma tarefa fácil em algo memoravelmente pior.**
+
+Se você não vê potencial na nossa ideia… você está no caminho certo.
+
+---
+
+## Funcionalidades
+
+### Simulação Visual
+- **Blur dinâmico** fora das lentes dos óculos — quanto mais longe dos óculos, mais turvo
+- **Sujeira progressiva** nas lentes ao longo do tempo, com acúmulo realista de poeira
+- **Pano de limpeza interativo** — arraste para limpar as lentes manualmente
+- **Simulação de chuva** com gotas nas lentes e limpador de parabrisa automático
+- **Sons ambiente** sincronizados com a chuva e o limpador
+
+### Óculos Físicos
+- **Física completa**: gravidade, fricção, quique e momento de arrasto
+- **Quebra por impacto**: óculos caem e quebram se jogados com velocidade excessiva
+- **Arrastar e soltar** com velocidade de lançamento calculada pelo histórico de posição
+
+### Doenças Oculares (Plano Pro)
+Simulação com grau ajustável de:
+- Astigmatismo
+- Hipermetropia
+- Glaucoma
+- Catarata
+
+### Ambientes Simulados
+Todos os ambientes rodam com o overlay de miopia ativo:
+| Ambiente | Descrição |
+|---|---|
+| **Windows** | Simulador de Windows 11 no navegador |
+| **Myoopia** | Clone do Google |
+| **MyoTube** | Clone do YouTube |
+| **reCAPTCHA** | Desafio de imagens do Google — com miopia |
+
+### Planos
+| | Free | Pro | Enterprise |
+|---|---|---|---|
+| Blur | Leve | Personalizável | Personalizável |
+| Doenças oculares | — | ✓ | ✓ |
+| Skin de armação | — | ✓ | ✓ |
+| Lente de contato | — | — | ✓ |
+| Conserto dos óculos | 4 horas | Instantâneo | Sem quebra |
+| Preço | Grátis | R$ 9,90/mês | R$ 500/mês |
+
+### Lente de Contato (Enterprise)
+Usuários Enterprise podem ativar a lente de contato diretamente na Ótica: visão completamente normal, sem blur, sem chuva.
+
+### Ótica MyOpia
+Loja de armações com:
+- Preview em tempo real antes de comprar
+- Múltiplas formas: Redondo, Quadrado, Retangular, Olho de Gato, Coleção Especial
+- Sistema de compra via PIX (manual)
+
+### Missões
+Sistema de conquistas desbloqueadas conforme o usuário explora os ambientes.
+
+---
+
+## Stack Técnica
+
+| Camada | Tecnologia |
+|---|---|
+| Framework | React 19 |
+| Linguagem | TypeScript 6 |
+| Build | Vite 8 |
+| Estilo | Tailwind CSS v4 |
+| Roteamento | React Router v7 |
+| Estado global | Zustand + Context API |
+| Animações | Framer Motion |
+| Áudio | Howler.js |
+
+### Arquitetura
+
+```
+src/
+├── pages/
+│   ├── Home/          # Tela inicial com seleção de plano e ambientes
+│   ├── Browser/       # Clone do Google (busca + resultados)
+│   ├── Youtube/       # Clone do YouTube (listagem + watch)
+│   ├── Windows/       # Simulador de desktop Windows 11
+│   ├── captcha/       # Desafio reCAPTCHA
+│   ├── Otica/         # Loja de armações e configurações visuais
+│   └── Missoes/       # Sistema de conquistas
+├── components/
+│   ├── SimulatedLayout   # Wrapper que injeta todos os overlays de miopia
+│   ├── BlurOverlay       # Blur SVG com máscara nas lentes
+│   ├── Glasses           # Óculos arrastável com física
+│   ├── CleaningCloth     # Pano de limpeza interativo
+│   ├── RainCanvas        # Canvas de gotas de chuva
+│   ├── WiperAnimation    # Limpador de parabrisa
+│   ├── ConditionOverlay  # Overlay de doenças oculares
+│   └── ConfigPanel       # Painel de controle (canto inferior direito)
+├── contexts/
+│   ├── PlanContext       # Plano ativo + lente de contato
+│   ├── SkinContext       # Armação equipada / em prévia
+│   └── ConditionContext  # Estado das doenças oculares
+├── hooks/
+│   ├── useGlassesPhysics # Loop RAF com gravidade, bounce e quebra
+│   ├── useLensCondition  # Acúmulo de sujeira e limpeza por pano
+│   ├── useRain           # Ciclos de chuva aleatórios
+│   └── useRainSounds     # Áudio sincronizado com chuva/limpador
+└── data/
+    ├── plans.ts          # Definição dos planos e features
+    ├── skins.ts          # Catálogo de armações
+    └── conditions.ts     # Doenças oculares disponíveis
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Destaques de implementação
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+**Blur por máscara SVG** — O `BlurOverlay` usa `<mask>` SVG para aplicar `backdrop-filter: blur()` fora das lentes e sujeira dentro, seguindo a posição e rotação dos óculos em tempo real via `transform`.
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+**Física dos óculos** — `useGlassesPhysics` roda um loop `requestAnimationFrame` com gravidade, fricção e bounce nas paredes. A velocidade de lançamento é calculada pelo histórico dos últimos 80ms de posição do mouse. Queda com velocidade vertical acima de 18px/frame quebra os óculos.
+
+**Chuva desacoplada** — `useRain` agenda ciclos aleatórios (20–40s de chuva, 30–60s de seca) independentes da renderização. Aceita um flag `disabled` para ser inativado instantaneamente pela lente de contato sem cancelar timers do lado do consumidor.
+
+**Lente de contato** — Quando ativa, o `SimulatedLayout` suprime a renderização de todos os overlays (`BlurOverlay`, `Glasses`, `RainCanvas`, etc.) sem desmontar os hooks subjacentes, preservando o estado da física e da sujeira.
+
+---
+
+## Rodando localmente
+
+```bash
+npm install
+npm run dev
 ```
+
+```bash
+# Checar tipos + build de produção
+npm run build
+```
+
+---
+
+*Claude Brothers · CodeCon 2026*
