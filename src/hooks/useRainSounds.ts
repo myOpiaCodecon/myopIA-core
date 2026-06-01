@@ -39,7 +39,7 @@ export function useRainSounds(isRaining: boolean, isWiping: boolean) {
 
       const gain = ctx.createGain()
       gain.gain.setValueAtTime(0, ctx.currentTime)
-      gain.gain.linearRampToValueAtTime(0.18, ctx.currentTime + 2.5) // fade-in 2.5s
+      gain.gain.linearRampToValueAtTime(0.09, ctx.currentTime + 2.5) // fade-in 2.5s
 
       src.connect(filter)
       filter.connect(shelf)
